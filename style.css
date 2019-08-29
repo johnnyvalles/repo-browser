@@ -58,3 +58,55 @@ header h1 {
     font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
     text-transform: uppercase;
 }
+
+.repo-view {
+    margin: 1rem 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.repo {
+    position: relative;
+    box-sizing: border-box;
+    background: #FFF;
+    margin: 0 auto; 
+    width: 75%;
+    border-radius: 10px;
+    padding: 0 0.5rem;
+    height: 8rem;
+}
+
+.repo h2 {
+    margin: 0; 
+    padding: 0;
+    float: left;
+    width: 75%;
+}
+
+.commit-count {
+    width: 25%;
+    height: 100%;
+    float: right;
+}
+
+.commit-count span {
+    display: block;
+    text-align: center;
+    color: lightgrey;
+}
+
+.commit-count span:first-child {
+    font-size: 4rem;
+}
+
+.commit-count span:nth-child(2) {
+    font-size: initial;
+    height: 30%;
+}
+
+.repo ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 0.5rem;
+    width: 75%;
+}
