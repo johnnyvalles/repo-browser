@@ -5,7 +5,7 @@ html {
 body {
     font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
-    background: linear-gradient(70deg, pink, lightblue);
+    background: linear-gradient(70deg, lightpink, lightblue);
 }
 
 .clearfix::after {
@@ -92,7 +92,7 @@ header h1 {
 .commit-count span {
     display: block;
     text-align: center;
-    color: lightgrey;
+    color: #999;
 }
 
 .commit-count span:first-child {
