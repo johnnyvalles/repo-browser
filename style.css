@@ -13,3 +13,22 @@ body {
     clear: both;
     display: table;
 }
+
+header {
+    background: #FFF;
+    padding: 1em 0;
+    text-align: center;
+    box-shadow: 5px 5px 10px #999;
+}
+
+header img {
+    position: relative;
+    height: 10%;
+    width: 10%;
+}
+
+header h1 {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 200%;
+}
