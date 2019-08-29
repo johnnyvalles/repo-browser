@@ -32,3 +32,29 @@ header h1 {
     text-transform: uppercase;
     font-size: 200%;
 }
+
+.search {
+    margin-top: 2rem;
+}
+
+.search input[type=text] {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0 auto;
+    font-size: 1.4rem;
+    padding: 0.3rem 1rem;
+    font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
+    width: 75%;
+}
+
+.search button {
+    display: block;
+    box-sizing: border-box;
+    width: 75%;
+    margin: 0.5rem auto 0 auto;
+    padding: 0.3rem 1rem;
+    font-size: 1.4rem;
+    font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
+    text-transform: uppercase;
+}
