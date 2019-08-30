@@ -1,8 +1,14 @@
 "use strict"
 
+function resetView() {
+    document.querySelector(".repo-view").innerHTML = "";
+}
+
 function searchRepo() {
+    resetView();
     getRepo(getInput());
 }
+
 function getInput() {
     return input.value; 
 }
