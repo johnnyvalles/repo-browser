@@ -1,5 +1,12 @@
 "use strict"
 
+function searchRepo() {
+    getRepo(getInput());
+}
+function getInput() {
+    return input.value; 
+}
+
 function makeRepoHTML(data) {
     for (let repo of data) {
         let div1 = document.createElement("div");
@@ -31,9 +38,13 @@ function showRepo(event, data) {
     makeRepoHTML(JSON.parse(this.responseText));
 }
 
-function getRepo() {
+function getRepo(user) {
     const req = new XMLHttpRequest();
-    req.open("GET", "https://api.github.com/users/octocat/repos");
+    req.open("GET", `https://api.github.com/users/${user || "octocat"}/repos`);
     req.send();
     req.addEventListener("load", showRepo);
 }
+
+const input = document.querySelector("input");
+const btn = document.querySelector("button");
+btn.addEventListener("click", searchRepo);
