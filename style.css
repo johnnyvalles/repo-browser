@@ -75,7 +75,8 @@ header h1 {
     width: 75%;
     border-radius: 10px;
     padding: 0 0.5rem;
-    height: 8rem;
+    min-height: 8rem;
+    max-height: 12rem;
 }
 
 .repo h2 {
