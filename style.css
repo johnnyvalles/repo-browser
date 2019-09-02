@@ -5,7 +5,9 @@ html {
 body {
     font-family: "Oswald", Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
-    background: linear-gradient(70deg, lightpink, lightblue);
+    height: auto;
+    background: repeating-linear-gradient(70deg, lightpink, lightblue);
+    background-attachment: fixed;
 }
 
 .clearfix::after {
