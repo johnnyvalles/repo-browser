@@ -22,8 +22,14 @@ function makeRepoHTML(data) {
         let span1 = document.createElement("span");
         let span2 = document.createElement("span");
         let owner = document.createElement("li");
+        let watchers = document.createElement("li");
+        let forks = document.createElement("li");
         owner.textContent = `Owner: ${repo["owner"]["login"]}`;
         ul.appendChild(owner);
+        watchers.textContent = `Watchers: ${repo["watchers_count"]}`;
+        ul.appendChild(watchers);
+        forks.textContent = `Forks: ${repo["forks_count"]}`;
+        ul.appendChild(forks);
         span1.textContent = "42";
         span2.textContent = "commits";
         div2.appendChild(span1);
