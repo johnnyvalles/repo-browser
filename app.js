@@ -1,62 +1,53 @@
-"use strict"
+"use strict";
 
-function resetView() {
-    document.querySelector(".repo-view").innerHTML = "";
+const input = document.querySelector("input");
+const srchBtn = document.querySelector("button");
+const repoView = document.querySelector(".repo-view");
+let curr_repos = [];
+
+function Repo(owner, name, watchers, forks) {
+    this.owner = owner;
+    this.name = name;
+    this.watchers_count = watchers; 
+    this.forks_count = forks;
+    this.commits = [];  // Array for all commits
 }
 
-function searchRepo() {
-    resetView();
-    getRepo(getInput());
+function resetRepoView() {
+    repoView.innerHTML = "";
 }
 
-function getInput() {
-    return input.value; 
-}
-
-function makeRepoHTML(data) {
-    for (let repo of data) {
-        let div1 = document.createElement("div");
-        let h2 = document.createElement("h2");
-        let div2 = document.createElement("div");
-        let ul = document.createElement("ul");
-        let span1 = document.createElement("span");
-        let span2 = document.createElement("span");
-        let owner = document.createElement("li");
-        let watchers = document.createElement("li");
-        let forks = document.createElement("li");
-        owner.textContent = `Owner: ${repo["owner"]["login"]}`;
-        ul.appendChild(owner);
-        watchers.textContent = `Watchers: ${repo["watchers_count"]}`;
-        ul.appendChild(watchers);
-        forks.textContent = `Forks: ${repo["forks_count"]}`;
-        ul.appendChild(forks);
-        span1.textContent = "42";
-        span2.textContent = "commits";
-        div2.appendChild(span1);
-        div2.appendChild(span2);
-        div1.className = "repo";
-        div1.dataset.repoName = repo["name"];
-        div1.dataset.ownerName = repo["owner"]["login"];
-        h2.textContent = repo["name"];
-        div2.className = "commit-count";
-        div1.appendChild(h2);
-        div1.appendChild(div2);
-        div1.appendChild(ul);
-        document.querySelector(".repo-view").appendChild(div1);
+function parseResponse(res) {
+    res = JSON.parse(res);
+    for (let repo of res) {
+        curr_repos.push(new Repo(repo["owner"]["login"], 
+        repo["name"], repo["watchers_count"], repo["forks_count"]));
     }
 }
 
-function showRepo(event, data) {
-    makeRepoHTML(JSON.parse(this.responseText));
-}
-
-function getRepo(user) {
+function searchUser(user) {
     const req = new XMLHttpRequest();
     req.open("GET", `https://api.github.com/users/${user || "octocat"}/repos`);
+    req.addEventListener("load", () => {
+        parseResponse(req.responseText);
+    });
     req.send();
-    req.addEventListener("load", showRepo);
 }
 
-const input = document.querySelector("input");
-const btn = document.querySelector("button");
-btn.addEventListener("click", searchRepo);
+function getInput() {
+    return input.value;
+}
+
+function resetInput() {
+    input.value = "";
+}
+
+function searchClicked() {
+    let user = getInput();
+    resetInput();
+    resetRepoView();
+    searchUser(user);
+    console.log(curr_repos);
+}
+
+srchBtn.addEventListener("clicked", searchClicked);
