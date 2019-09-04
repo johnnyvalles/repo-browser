@@ -2,6 +2,7 @@
 
 const input = document.querySelector("input");
 const srchBtn = document.querySelector("button");
+srchBtn.addEventListener("click", searchClicked);
 const repoView = document.querySelector(".repo-view");
 let curr_repos = [];
 
@@ -18,18 +19,19 @@ function resetRepoView() {
 }
 
 function parseResponse(res) {
-    res = JSON.parse(res);
     for (let repo of res) {
         curr_repos.push(new Repo(repo["owner"]["login"], 
-        repo["name"], repo["watchers_count"], repo["forks_count"]));
+        repo["name"], repo["watchers_count"], 
+        repo["forks_count"]));
     }
 }
 
 function searchUser(user) {
     const req = new XMLHttpRequest();
     req.open("GET", `https://api.github.com/users/${user || "octocat"}/repos`);
-    req.addEventListener("load", () => {
-        parseResponse(req.responseText);
+    req.addEventListener("load", () => { 
+        parseResponse(JSON.parse(req.responseText));
+        console.log(curr_repos);
     });
     req.send();
 }
@@ -42,12 +44,10 @@ function resetInput() {
     input.value = "";
 }
 
+// Entry Point
 function searchClicked() {
     let user = getInput();
     resetInput();
     resetRepoView();
     searchUser(user);
-    console.log(curr_repos);
 }
-
-srchBtn.addEventListener("clicked", searchClicked);
