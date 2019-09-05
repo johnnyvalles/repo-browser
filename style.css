@@ -63,7 +63,6 @@ header h1 {
 
 .repo-view {
     margin: 1rem 0;
-    position: relative;
     box-sizing: border-box;
 }
 
@@ -71,45 +70,54 @@ header h1 {
     position: relative;
     box-sizing: border-box;
     background: #FFF;
-    margin: 0 auto; 
+    margin: 1rem auto; 
     width: 75%;
     border-radius: 10px;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
     min-height: 8rem;
     max-height: 12rem;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.repo .info {
+    position: relative;
+    width: 65%;
+    height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+    padding: 0 0 0 0.5rem;
 }
 
 .repo h2 {
     margin: 0; 
-    padding: 0;
-    float: left;
-    width: 75%;
 }
 
-.commit-count {
-    width: 25%;
+.stars-count {
+    box-sizing: border-box;
     height: 100%;
-    float: right;
-}
-
-.commit-count span {
-    display: block;
+    width: 35%;
     text-align: center;
     color: #999;
+    min-height: inherit;
+    max-height: inherit;
 }
 
-.commit-count span:first-child {
-    font-size: 4rem;
+.stars-count span {
+    display: block;
+}
+.stars-count span:first-child {
+    font-size: 3.5rem;
+    padding: 0 1rem;
 }
 
-.commit-count span:nth-child(2) {
+.stars-count span:nth-child(2) {
     font-size: initial;
-    height: 30%;
 }
 
 .repo ul {
     list-style: none;
     padding: 0;
-    margin-left: 0.5rem;
-    width: 75%;
+    margin: 0;
 }
