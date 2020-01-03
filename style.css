@@ -16,6 +16,11 @@ body {
     display: table;
 }
 
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
 header {
     background: #FFF;
     padding: 1em 0;
