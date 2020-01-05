@@ -2,8 +2,18 @@
 
 const input = document.querySelector("input");
 const srchBtn = document.querySelector("button");
-srchBtn.addEventListener("click", searchClicked);
 const repoView = document.querySelector(".repo-view");
+
+// When the user hits enter/return while
+// typing in input, begin search.
+input.addEventListener("keydown", function(e) {
+    e.stopPropagation();
+    if (e.keyCode === 13) {
+        startSearch();
+    }
+});
+
+srchBtn.addEventListener("click", startSearch);
 
 function Repo(owner, name, forks, stars, branches = 0) {
     this.owner = owner;
@@ -124,7 +134,7 @@ function getInput() {
 }
 
 // Entry Point
-function searchClicked() {
+function startSearch() {
     let user = getInput();
     resetInput();
     resetRepoView();
