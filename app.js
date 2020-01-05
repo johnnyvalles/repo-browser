@@ -4,19 +4,16 @@ const input = document.querySelector("input");
 const srchBtn = document.querySelector("button");
 srchBtn.addEventListener("click", searchClicked);
 const repoView = document.querySelector(".repo-view");
-let curr_repos = [];
 
-function Repo(owner, name, watchers, forks, stars) {
+function Repo(owner, name, forks, stars, branches = 0) {
     this.owner = owner;
     this.name = name;
-    this.watchers_count = watchers; 
     this.forks_count = forks;
     this.stargazers_count = stars;
-    this.commits = [];  // Array for all commits
+    this.branch_count = branches; 
 }
 
-function makeRepoHTML(data) {
-    for (let repo of data) {
+function makeRepoHTML(repo) {
         // main parent DIV
         let card = document.createElement("div");
         card.className = "repo";
@@ -31,12 +28,12 @@ function makeRepoHTML(data) {
         let ul = document.createElement("ul");
         let owner = document.createElement("li");
         owner.textContent = `Owner: ${repo["owner"]}`;
-        let watchers = document.createElement("li");
-        watchers.textContent = `Watchers: ${repo["watchers_count"]}`;
+        let branches = document.createElement("li");
+        branches.textContent = `Branches: ${repo["branch_count"]}`;
         let forks = document.createElement("li");
         forks.textContent = `Forks: ${repo["forks_count"]}`;
         ul.appendChild(owner);
-        ul.appendChild(watchers);
+        ul.appendChild(branches);
         ul.appendChild(forks);
         info.appendChild(h2);
         info.appendChild(ul);
@@ -55,25 +52,63 @@ function makeRepoHTML(data) {
         card.appendChild(info);
         card.appendChild(starsCount);
         document.querySelector(".repo-view").appendChild(card);
-    }
 }
 
-function parseResponse(res) {
-    for (let repo of res) {
-        curr_repos.push(new Repo(repo["owner"]["login"], 
-        repo["name"], repo["watchers_count"], 
-        repo["forks_count"], repo["stargazers_count"]));
-    }
-}
-
-function searchUser(user) {
-    const req = new XMLHttpRequest();
-    req.open("GET", `https://api.github.com/users/${user || "octocat"}/repos`);
-    req.addEventListener("load", () => { 
-        parseResponse(JSON.parse(req.responseText));
-        makeRepoHTML(curr_repos);
+function createRepoObjects(data) {
+    let repos = [];
+    data.forEach(function(repo) {
+        repos.push(new Repo(
+            repo["owner"]["login"],
+            repo["name"],
+            repo["forks_count"],
+            repo["stargazers_count"]
+        ));
     });
-    req.send();
+    return repos;
+}
+
+function getUserData(user) {
+    // Create the first request to get the user's list of repositories.
+    let repoReq = new XMLHttpRequest();
+    repoReq.open("GET", `https://api.github.com/users/${user || 'octocat'}/repos`);
+    repoReq.addEventListener("load", function() {
+        /* 
+            Check if the request was successfull. 
+            If server response is not 200, there was an error.
+            Otherwise, continue through and begin requesting branch
+            data for each repository.
+        */
+        if (repoReq.status != 200) {
+            console.log(`Error getting the repo data for user ${user}`);
+        } else {
+            // Parse response (returns the user's repositories)
+            let repoData = JSON.parse(repoReq.responseText);
+            
+            // Create Repo objects from response data.
+            let repos = createRepoObjects(repoData);
+
+            // For each Repo object in repos, request its branch count.
+            repos.forEach(function(repo) {
+                // Create a request for the repos' branches.
+                let branchReq = new XMLHttpRequest();
+                branchReq.open("GET", `https://api.github.com/repos/${repo.owner}/${repo.name}/branches`);
+                
+                branchReq.addEventListener("load", function() {
+                    if (branchReq.status != 200) {
+                        console.log(`Error getting the branches for repo ${repo.name}`);
+                        repo.branch_count = "Error";
+                    } else {
+                        let res = JSON.parse(branchReq.responseText);
+                        repo.branch_count = res.length;
+                    }
+                    makeRepoHTML(repo);
+                });
+
+                branchReq.send();
+            });
+        }
+    });
+    repoReq.send();
 }
 
 function resetRepoView() {
@@ -90,10 +125,8 @@ function getInput() {
 
 // Entry Point
 function searchClicked() {
-    console.log("SEARCH");
     let user = getInput();
     resetInput();
     resetRepoView();
-    curr_repos = [];
-    searchUser(user);
+    getUserData(user);
 }
