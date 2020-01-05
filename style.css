@@ -18,7 +18,8 @@ body {
 
 .container {
     max-width: 960px;
-    margin: 0 auto;
+    margin: 1em auto;
+    padding: 1em 0;
 }
 
 header {
@@ -38,10 +39,6 @@ header h1 {
     margin: 0;
     text-transform: uppercase;
     font-size: 200%;
-}
-
-.search {
-    margin-top: 2rem;
 }
 
 .search input[type=text] {
@@ -67,7 +64,6 @@ header h1 {
 }
 
 .repo-view {
-    margin: 1rem 0;
     box-sizing: border-box;
 }
 
